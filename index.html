@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新人 AI 工作 SOP：使用 Cloudflare Pages 部署网站</title>
+<title>新人 AI 工作 SOP：网站部署上线</title>
 <style>
 @font-face {
   font-family: 'WorkSans';
@@ -93,10 +93,15 @@ section li { margin-bottom: 6px; }
 .callout.success { background: rgba(63,185,80,0.08); border-left: 3px solid var(--accent2); }
 .callout strong { color: var(--ink); }
 
-/* Code */
-pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 20px; overflow-x: auto; margin: 12px 0; font-family: 'JetBrainsMono', 'Consolas', monospace; font-size: 13px; line-height: 1.6; }
-code { font-family: 'JetBrainsMono', 'Consolas', monospace; font-size: 0.88em; background: var(--bg3); padding: 2px 6px; border-radius: 4px; color: var(--accent); }
-pre code { background: none; padding: 0; color: var(--ink); }
+/* Prompt box (replaces code blocks) */
+.prompt-box { background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+.prompt-box .label { font-size: 12px; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.prompt-box .content { font-size: 14px; color: var(--ink); line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
+
+/* UI reference box */
+.ui-ref { background: var(--bg2); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 16px; margin: 8px 0; font-size: 14px; }
+.ui-ref .key { color: var(--accent); font-weight: 700; }
+.ui-ref .cn { color: var(--muted); }
 
 /* Tables */
 .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 8px; border: 1px solid var(--rule); }
@@ -104,7 +109,6 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 400p
 th { background: var(--bg2); text-align: left; padding: 12px 16px; font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--rule); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 td { padding: 12px 16px; border-bottom: 1px solid var(--rule); }
 tr:last-child td { border-bottom: none; }
-td code { font-size: 12px; }
 
 /* Steps */
 .step { display: flex; gap: 16px; margin: 20px 0; }
@@ -117,9 +121,8 @@ td code { font-size: 12px; }
 .status.bad { background: rgba(248,81,73,0.1); color: var(--danger); }
 .status.warn { background: rgba(210,153,34,0.1); color: var(--warn); }
 
-/* Template box */
-.template-box { background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 24px; margin: 20px 0; }
-.template-box h4 { margin-top: 0; }
+/* AI action badge */
+.ai-action { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
 
 footer { padding: 48px 0 64px; text-align: center; color: var(--muted); font-size: 13px; }
 footer a { color: var(--accent); text-decoration: none; }
@@ -136,13 +139,13 @@ footer a { color: var(--accent); text-decoration: none; }
 <!-- Hero -->
 <div class="hero">
   <span class="badge">AI + 人协同 SOP</span>
-  <h1>新人 AI 工作 SOP：使用 Cloudflare Pages 部署网站</h1>
-  <p>面向使用 AI 但不懂代码的新手。跟着点就能上线，遇到问题有 AI 帮忙排查。基于真实部署经验整理。</p>
+  <h1>新人 AI 工作 SOP：网站部署上线</h1>
+  <p>面向使用 AI 但不懂代码的新手。你负责点击操作，AI 负责技术判断。遇到任何困难，把信息发给 AI 让它帮你。</p>
   <div class="meta">
-    <span><strong>版本</strong> v2.0</span>
+    <span><strong>版本</strong> v3.0</span>
     <span><strong>更新</strong> 2026-07-14</span>
     <span><strong>适用</strong> 零基础新手</span>
-    <span><strong>方式</strong> AI + 人协同操作</span>
+    <span><strong>方式</strong> 你点 + AI 帮</span>
   </div>
 </div>
 
@@ -150,14 +153,14 @@ footer a { color: var(--accent); text-decoration: none; }
 <div class="toc">
   <h2>目录</h2>
   <ol>
-    <li><a href="#ch1">适用场景与前置条件</a></li>
+    <li><a href="#ch1">这个 SOP 是给谁用的</a></li>
     <li><a href="#ch2">网络环境说明（重要）</a></li>
     <li><a href="#ch3">部署前准备</a></li>
     <li><a href="#ch4">前端部署到 Cloudflare Pages</a></li>
     <li><a href="#ch5">后端部署到 Railway</a></li>
-    <li><a href="#ch6">配置 API 代理（让国内用户能访问后端）</a></li>
+    <li><a href="#ch6">让国内用户能访问后端（AI 帮你做）</a></li>
     <li><a href="#ch7">部署后检查事项</a></li>
-    <li><a href="#ch8">常见问题与解决方式</a></li>
+    <li><a href="#ch8">遇到问题怎么办</a></li>
     <li><a href="#ch9">给 AI 的提问模板</a></li>
     <li><a href="#ch10">后续维护</a></li>
     <li><a href="#ch11">流程总结</a></li>
@@ -166,30 +169,32 @@ footer a { color: var(--accent); text-decoration: none; }
 
 <!-- 1 -->
 <section id="ch1">
-  <h2>一、适用场景与前置条件</h2>
-  <p>当我们已经有网站项目代码，并且代码已经上传到 GitHub 仓库时，可以使用本 SOP 完成网站部署上线。</p>
-  <h3>适用场景</h3>
+  <h2>一、这个 SOP 是给谁用的</h2>
+  <p>当你已经有一个网站项目，代码已经上传到 GitHub 后，可以用这个 SOP 完成上线。</p>
+  <h3>适合的场景</h3>
   <ul>
-    <li>静态网站部署（纯 HTML/CSS/JS）</li>
-    <li>前端项目部署（React / Vue / Next.js / Astro 等）</li>
-    <li>官网 / 活动页 / 工具页上线</li>
-    <li>需要后端 API 的全栈网站上线</li>
+    <li>纯展示类网站（官网、活动页、个人主页）</li>
+    <li>带搜索、登录等交互功能的网站</li>
+    <li>工具页、落地页上线</li>
   </ul>
-  <h3>前置条件</h3>
+  <h3>你需要准备的账号</h3>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>条件</th><th>说明</th><th>是否必须</th></tr></thead>
+      <thead><tr><th>账号</th><th>干什么用的</th><th>是否必须</th></tr></thead>
       <tbody>
-        <tr><td>GitHub 账号</td><td>代码已上传到 GitHub 仓库</td><td>必须</td></tr>
-        <tr><td>Cloudflare 账号</td><td>用于部署前端和 API 代理</td><td>必须</td></tr>
-        <tr><td>Railway 账号</td><td>用于部署后端（仅全栈网站需要）</td><td>有后端时必须</td></tr>
-        <tr><td>代理工具（VPN）</td><td>注册和配置海外平台时需要</td><td>必须（见第二章）</td></tr>
-        <tr><td>AI 工具</td><td>遇到问题随时让 AI 帮忙</td><td>强烈建议</td></tr>
+        <tr><td>GitHub 账号</td><td>存放你的网站代码</td><td>必须</td></tr>
+        <tr><td>Cloudflare 账号</td><td>放你的网站，让用户能访问</td><td>必须</td></tr>
+        <tr><td>Railway 账号</td><td>放你的后端程序（只有网站有搜索/登录等功能时才需要）</td><td>有后端时必须</td></tr>
+        <tr><td>代理工具（翻墙软件）</td><td>注册和配置海外平台时需要</td><td>必须（见第二章）</td></tr>
+        <tr><td>AI 工具（如 TRAE）</td><td>遇到任何困难随时问 AI</td><td>强烈建议</td></tr>
       </tbody>
     </table>
   </div>
   <div class="callout info">
-    <strong>核心理念</strong>：你不需要懂代码，只需要会"跟着点 + 遇到问题截图发给 AI"。技术判断交给 AI，操作交给你。
+    <strong>核心理念</strong>：你不需要懂代码。你只需要做两件事：<strong>跟着步骤点击操作</strong>，以及<strong>遇到不确定的地方把信息发给 AI 让它帮你判断</strong>。
+  </div>
+  <div class="callout success">
+    <strong>什么是"前端"和"后端"？</strong>：简单理解——用户能看到和点击的页面叫"前端"，在背后处理数据、搜索、保存信息的程序叫"后端"。如果你的网站只有展示页面没有交互功能，那就只有前端，不需要后端。
   </div>
 </section>
 
@@ -197,47 +202,48 @@ footer a { color: var(--accent); text-decoration: none; }
 <section id="ch2">
   <h2>二、网络环境说明（重要）</h2>
   <div class="callout danger">
-    <strong>这是新手最容易忽略的一步</strong>：不同平台在国内的访问情况不同。不提前了解，会导致"明明配置对了但就是打不开"。
+    <strong>这是新手最容易忽略的一步</strong>：不同平台在国内的访问情况不同。不提前了解，会导致"明明操作对了但就是打不开"。
   </div>
-  <h3>平台国内访问情况</h3>
+  <h3>各平台在国内能不能打开？</h3>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>平台</th><th>国内状态</th><th>用途</th></tr></thead>
+      <thead><tr><th>平台</th><th>国内状态</th><th>用来干什么</th></tr></thead>
       <tbody>
-        <tr><td>Cloudflare Pages</td><td><span class="status ok">直连可用</span></td><td>前端托管 + API 代理</td></tr>
-        <tr><td>DeepSeek API</td><td><span class="status ok">直连可用</span></td><td>AI 大模型</td></tr>
-        <tr><td>GitHub</td><td><span class="status warn">不稳定</span></td><td>代码仓库</td></tr>
-        <tr><td>Cloudflare 控制台</td><td><span class="status warn">建议开代理</span></td><td>配置部署</td></tr>
-        <tr><td>Railway</td><td><span class="status bad">被墙</span></td><td>后端托管</td></tr>
-        <tr><td>Vercel</td><td><span class="status bad">被墙</span></td><td>不要用</td></tr>
+        <tr><td>Cloudflare Pages</td><td><span class="status ok">能直接打开</span></td><td>放你的网站</td></tr>
+        <tr><td>DeepSeek</td><td><span class="status ok">能直接打开</span></td><td>AI 服务（如果你的网站用到了）</td></tr>
+        <tr><td>GitHub</td><td><span class="status warn">时好时坏</span></td><td>存代码</td></tr>
+        <tr><td>Cloudflare 操作后台</td><td><span class="status warn">建议开代理</span></td><td>配置网站部署</td></tr>
+        <tr><td>Railway</td><td><span class="status bad">打不开</span></td><td>放后端程序</td></tr>
+        <tr><td>Vercel</td><td><span class="status bad">打不开</span></td><td>不要用这个</td></tr>
       </tbody>
     </table>
   </div>
-  <h3>什么时候开代理，什么时候关？</h3>
+  <h3>什么时候要开代理，什么时候不用？</h3>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>操作</th><th>需要代理？</th><th>说明</th></tr></thead>
+      <thead><tr><th>你在做什么</th><th>要开代理吗？</th><th>说明</th></tr></thead>
       <tbody>
-        <tr><td>注册 GitHub / Cloudflare / Railway</td><td>需要开</td><td>注册页面需要验证，国内直连可能卡住</td></tr>
-        <tr><td>使用 Cloudflare 控制台</td><td>建议开</td><td>页面加载更稳定</td></tr>
-        <tr><td>推送代码到 GitHub</td><td>看情况</td><td>大部分时间可用，断连时开代理</td></tr>
-        <tr><td><strong>用户访问你的网站</strong></td><td><strong>不需要</strong></td><td><strong>网站在 Cloudflare 上，国内直连</strong></td></tr>
+        <tr><td>注册 GitHub / Cloudflare / Railway 账号</td><td>要开</td><td>注册时可能需要验证，不开代理可能卡住</td></tr>
+        <tr><td>在 Cloudflare 后台操作</td><td>建议开</td><td>开了更稳定，不容易加载失败</td></tr>
+        <tr><td>上传代码到 GitHub</td><td>看情况</td><td>有时候能传成功，传不上去就开代理</td></tr>
+        <tr><td><strong>别人访问你的网站</strong></td><td><strong>不用开</strong></td><td><strong>网站放在 Cloudflare 上，国内直接能打开</strong></td></tr>
       </tbody>
     </table>
   </div>
   <div class="callout warn">
-    <strong>记住这句话</strong>：开发和配置阶段需要开代理，上线后用户访问不需要开代理。
+    <strong>记住这句话</strong>：你在配置和部署的时候需要开代理，但你的用户访问网站时不需要开代理。
   </div>
-  <h3>怎么给 Git 配置代理</h3>
-  <p>如果你有代理软件（如 Clash），端口通常是 <code>7890</code> 或 <code>10808</code>：</p>
-  <pre><code># 设置代理
-git config --global http.proxy http://127.0.0.1:10808
-git config --global https.proxy http://127.0.0.1:10808
-
-# 取消代理
-git config --global --unset http.proxy
-git config --global --unset https.proxy</code></pre>
-  <p>不确定端口的话，问 AI："我的代理软件是 XXX，帮我看看本地代理端口是多少"。</p>
+  <h3>上传代码到 GitHub 总是失败？</h3>
+  <p>如果你在上传代码到 GitHub 时经常失败，可能是网络问题。不要自己折腾网络设置，直接问 AI：</p>
+  <div class="prompt-box">
+    <div class="label">发给 AI 的提示词</div>
+    <div class="content">我在上传代码到 GitHub 时总是失败，提示连接超时。
+我的电脑用的是 Windows 系统，代理软件是【填你的代理软件名称，比如 Clash / V2Ray 等】。
+请帮我：
+1. 判断是不是代理没配置好
+2. 如果需要配置，请告诉我具体怎么操作（一步一步来）
+3. 配置好了之后怎么测试是否成功</div>
+  </div>
 </section>
 
 <!-- 3 -->
@@ -246,26 +252,28 @@ git config --global --unset https.proxy</code></pre>
   <p>在开始部署前，确认以下内容：</p>
   <ol>
     <li>已注册并登录 Cloudflare 账号（注册时需要开代理）</li>
-    <li>已有 GitHub 账号，网站代码已上传到仓库</li>
-    <li>仓库中包含可部署的网站代码</li>
-    <li>如需 AI 协助，准备好以下信息发给 AI：
-      <ul>
-        <li>GitHub 仓库地址</li>
-        <li>项目使用的技术栈（不确定可以让 AI 看 package.json）</li>
-        <li>构建命令和输出目录（不确定可以让 AI 判断）</li>
-        <li>是否需要环境变量</li>
-      </ul>
-    </li>
+    <li>已有 GitHub 账号，网站代码已经上传到 GitHub 仓库</li>
+    <li>如果你的网站有搜索、登录等交互功能，还需要准备好后端代码的 GitHub 仓库</li>
   </ol>
   <div class="callout info">
-    <strong>不知道技术栈怎么办？</strong>：把项目的 <code>package.json</code> 内容、目录截图或仓库地址发给 AI，让 AI 帮忙判断构建命令和输出目录。
+    <strong>部署时需要填一些配置信息，但你不需要自己判断怎么填</strong>：Cloudflare 会问你一些问题（比如"你的项目用什么技术""构建命令是什么"），这些你不需要懂。把你的 GitHub 仓库地址发给 AI，AI 会告诉你每个空填什么。
+  </div>
+  <div class="prompt-box">
+    <div class="label">发给 AI 的提示词</div>
+    <div class="content">我要把网站部署到 Cloudflare Pages，这是我的 GitHub 仓库地址：【填你的仓库地址】
+请你帮我看看：
+1. 这个网站是什么类型的？
+2. Cloudflare 会问我的"构建命令"应该填什么？
+3. "输出目录"应该填什么？
+4. 有没有需要提前准备的东西？
+请用大白话告诉我，我完全不懂代码。</div>
   </div>
 </section>
 
 <!-- 4 -->
 <section id="ch4">
   <h2>四、前端部署到 Cloudflare Pages</h2>
-  <p>这是核心步骤。Cloudflare Pages 是国内可直连的前端托管平台，免费且无限流量。</p>
+  <p>这是核心步骤。Cloudflare Pages 是一个免费的网站托管平台，放在上面的网站国内用户可以直接访问。</p>
 
   <div class="step"><div class="step-num">1</div><div class="step-body">
     <p><strong>进入 Cloudflare 后台</strong></p>
@@ -276,31 +284,35 @@ git config --global --unset https.proxy</code></pre>
     <p><strong>找到 Workers & Pages</strong></p>
     <p>在左侧菜单栏找到 <strong>Workers & Pages</strong>，点击进入。</p>
     <p>如果左侧菜单很多，在 <strong>Build / Compute</strong> 分类下找。</p>
+    <div class="callout info">
+      <strong>Workers & Pages 是什么</strong>：就是 Cloudflare 里"管理网站"的页面。进去之后可以创建新的网站项目。
+    </div>
   </div></div>
 
   <div class="step"><div class="step-num">3</div><div class="step-body">
     <p><strong>创建新应用</strong></p>
     <p>点击右上角蓝色按钮 <strong>Create application</strong>。</p>
+    <p>中文理解：就是"创建新项目"的意思。</p>
   </div></div>
 
   <div class="step"><div class="step-num">4</div><div class="step-body">
-    <p><strong>选择部署 Pages</strong></p>
-    <p>默认显示 <strong>Create a Worker</strong>。我们是部署网站页面，需要选 Pages。</p>
+    <p><strong>选择部署 Pages（不要选 Worker！）</strong></p>
+    <p>默认显示 <strong>Create a Worker</strong>。不要点这个！我们是部署网站页面，需要选 Pages。</p>
     <p>在页面下方找到 <strong>"Looking to deploy Pages? Get started"</strong>，点击 <strong>Get started</strong>。</p>
-    <div class="callout info">
-      <strong>Worker vs Pages</strong>：Worker 偏向后端接口/Serverless 函数。Pages 适合部署网站、前端页面。网站上线选 Pages。
+    <div class="callout warn">
+      <strong>Worker 和 Pages 的区别（简单理解）</strong>：Worker 是用来处理后端逻辑的，Pages 是用来放网站页面的。我们要上线网站，所以选 Pages。<strong>选错了也没关系</strong>，退回去重新选就好。
     </div>
   </div></div>
 
   <div class="step"><div class="step-num">5</div><div class="step-body">
-    <p><strong>选择导入 Git 仓库</strong></p>
+    <p><strong>选择从 GitHub 导入</strong></p>
     <p>选择 <strong>Import an existing Git repository</strong>，点击 <strong>Get started</strong>。</p>
-    <p>选择这个选项后，后续 GitHub 代码更新，Cloudflare 可以自动重新部署。</p>
+    <p>中文理解：从 GitHub 上已有的代码仓库导入。这样以后你更新了 GitHub 上的代码，Cloudflare 会自动帮你重新部署。</p>
   </div></div>
 
   <div class="step"><div class="step-num">6</div><div class="step-body">
     <p><strong>选择 GitHub 仓库</strong></p>
-    <p>确认 GitHub 账号 → 在 <strong>Select a repository</strong> 区域选择目标仓库。</p>
+    <p>确认 GitHub 账号是否正确 → 在 <strong>Select a repository</strong> 区域选择你的网站仓库。</p>
     <p>仓库太多可以在搜索框输入名称搜索。</p>
   </div></div>
 
@@ -313,47 +325,56 @@ git config --global --unset https.proxy</code></pre>
       <li>勾选目标仓库 → 保存</li>
       <li>回到 Cloudflare 页面刷新，重新搜索</li>
     </ol>
+    <div class="callout info">
+      <strong>为什么找不到仓库？</strong>：因为 Cloudflare 还没有获得你 GitHub 仓库的访问权限。点授权链接给它权限就好了。
+    </div>
   </div></div>
 
   <div class="step"><div class="step-num">8</div><div class="step-body">
-    <p><strong>配置构建和部署信息</strong></p>
-    <p>选择仓库后进入配置页面，需要填写构建命令和输出目录。</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>项目类型</th><th>构建命令</th><th>输出目录</th></tr></thead>
-        <tbody>
-          <tr><td>纯 HTML/CSS/JS 静态网站</td><td>留空</td><td><code>/</code></td></tr>
-          <tr><td>Vite 项目</td><td><code>npm run build</code></td><td><code>dist</code></td></tr>
-          <tr><td>React 项目</td><td><code>npm run build</code></td><td><code>build</code> 或 <code>dist</code></td></tr>
-          <tr><td>Next.js 静态导出</td><td><code>npm run build</code></td><td><code>out</code></td></tr>
-          <tr><td>Astro 项目</td><td><code>npm run build</code></td><td><code>dist</code></td></tr>
-        </tbody>
-      </table>
-    </div>
+    <p><strong>填写配置信息（不知道怎么填就问 AI）</strong></p>
+    <p>选择仓库后会进入配置页面，需要填写几个信息。这里有英文术语，你不需要自己判断怎么填。</p>
     <div class="callout warn">
-      <strong>不确定怎么填？</strong>：不要乱填！把 <code>package.json</code> 内容发给 AI，让 AI 判断。
+      <strong>不要自己瞎填！</strong>：把你 GitHub 仓库地址发给 AI，AI 会告诉你每个空填什么。填错了会导致部署失败。
     </div>
+    <div class="prompt-box">
+      <div class="label">发给 AI 的提示词</div>
+      <div class="content">我正在 Cloudflare Pages 上部署网站，现在需要填写配置信息。
+我的 GitHub 仓库是：【填你的仓库地址】
+请告诉我：
+1. "Project name"（项目名称）填什么？
+2. "Production branch"（生产分支）填什么？
+3. "Build command"（构建命令）填什么？
+4. "Build output directory"（输出目录）填什么？
+5. "Environment variables"（环境变量）需要填吗？填什么？
+请一个一个告诉我，用大白话说。</div>
+    </div>
+    <p>AI 告诉你每个空填什么后，照着填就行。</p>
   </div></div>
 
   <div class="step"><div class="step-num">9</div><div class="step-body">
     <p><strong>点击部署</strong></p>
-    <p>点击 <strong>Save and Deploy</strong>，Cloudflare 开始构建和部署。</p>
+    <p>配置完成后，点击页面底部的 <strong>Save and Deploy</strong> 按钮。</p>
+    <p>中文理解：保存并开始部署。Cloudflare 会开始自动构建你的网站。</p>
   </div></div>
 
   <div class="step"><div class="step-num">10</div><div class="step-body">
     <p><strong>等待部署完成</strong></p>
-    <p>部署过程中会显示构建日志。成功后显示：</p>
+    <p>部署过程中会显示构建过程（一堆英文日志，看不懂没关系）。</p>
+    <p>如果部署成功，会出现成功页面，显示：</p>
     <p><strong>Success! Your project is deployed to Region: Earth</strong></p>
-    <p>并展示预览地址，例如 <code>website-deploy-sop.pages.dev</code>。</p>
+    <p>并展示一个网址，例如 <code>website-deploy-sop.pages.dev</code>。</p>
+    <div class="callout warn">
+      <strong>如果部署失败了</strong>：不要慌，也不要反复点击重新部署。把构建日志里红色的报错信息复制发给 AI，让 AI 帮你找原因。
+    </div>
   </div></div>
 
   <div class="step"><div class="step-num">11</div><div class="step-body">
     <p><strong>找到正式网站地址</strong></p>
-    <p>在项目详情页 <strong>Deployments</strong> → <strong>Production</strong> 区域，可以看到：</p>
+    <p>在项目详情页 <strong>Deployments</strong> → <strong>Production</strong> 区域，可以看到你的网站地址：</p>
     <p><code>https://你的项目名.pages.dev</code></p>
     <p>这个地址就是正式访问地址，可以分享给任何人。</p>
     <div class="callout info">
-      <strong>两种地址的区别</strong>：正式地址 <code>xxx.pages.dev</code> 对外使用；单次预览地址 <code>4601e4a2.xxx.pages.dev</code> 是某次部署的预览链接。对外分享用正式地址。
+      <strong>两种地址的区别</strong>：正式地址 <code>xxx.pages.dev</code> 是对外分享用的；还有一种带随机前缀的地址（比如 <code>4601e4a2.xxx.pages.dev</code>）是某次部署的预览链接，一般不用管。对外分享用正式地址。
     </div>
   </div></div>
 </section>
@@ -362,15 +383,15 @@ git config --global --unset https.proxy</code></pre>
 <section id="ch5">
   <h2>五、后端部署到 Railway</h2>
   <div class="callout warn">
-    <strong>什么时候需要这一步？</strong>：如果你的网站只有展示页面（没有搜索、登录、数据交互等功能），可以跳过这一章。只有需要后端 API 时才需要。
+    <strong>什么时候需要这一步？</strong>：如果你的网站只有展示页面（没有搜索、登录、数据交互等功能），可以跳过这一章。只有需要后端功能时才需要。
   </div>
-  <p>Railway 是一个免费的后端托管平台（每月 $5 免费额度），支持 Python、Node.js 等。类似 Cloudflare Pages 之于前端，Railway 是后端的托管平台。</p>
+  <p>Railway 是一个免费的后端托管平台（每月有 $5 免费额度）。你可以理解为：Cloudflare Pages 是放前端网页的，Railway 是放后端程序的。</p>
   <div class="callout danger">
-    <strong>重要提醒</strong>：Railway 在国内无法直接访问（被墙）。但这不影响使用——我们会在第六章用 Cloudflare 做代理。你现在只需要开代理完成部署配置。
+    <strong>重要提醒</strong>：Railway 在国内打不开（被墙了）。但这不影响使用——我们会在第六章用 Cloudflare 做一个"中转"，让国内用户也能访问到后端。你现在只需要开着代理完成部署配置就行。
   </div>
 
   <div class="step"><div class="step-num">1</div><div class="step-body">
-    <p><strong>注册 Railway 账号（需要开代理）</strong></p>
+    <p><strong>注册 Railway 账号（需要开代理）</p>
     <p>打开 <code>https://railway.app</code></p>
     <p>点击右上角 <strong>Login</strong> 按钮</p>
     <p>选择 <strong>Login with GitHub</strong></p>
@@ -381,11 +402,11 @@ git config --global --unset https.proxy</code></pre>
 
   <div class="step"><div class="step-num">2</div><div class="step-body">
     <p><strong>创建新项目</strong></p>
-    <p>在 Railway 控制台首页，点击 <strong>New Project</strong> 按钮（通常在右上角或页面中间）</p>
+    <p>在 Railway 控制台首页，点击 <strong>New Project</strong> 按钮</p>
     <p>弹出选项菜单，选择 <strong>Deploy from GitHub repo</strong></p>
     <p>中文理解：从 GitHub 仓库部署</p>
     <div class="callout info">
-      <strong>其他选项说明</strong>：Railway 还提供 <strong>Empty Project</strong>（空项目）和 <strong>Start from Template</strong>（模板部署）。我们选 Deploy from GitHub repo，因为代码已经在 GitHub 上了。
+      <strong>其他选项不用管</strong>：Railway 还会显示 <strong>Empty Project</strong>（空项目）和 <strong>Start from Template</strong>（模板部署），都不用选。我们选 Deploy from GitHub repo，因为代码已经在 GitHub 上了。
     </div>
   </div></div>
 
@@ -401,24 +422,24 @@ git config --global --unset https.proxy</code></pre>
   </div></div>
 
   <div class="step"><div class="step-num">4</div><div class="step-body">
-    <p><strong>配置环境变量</strong></p>
+    <p><strong>配置密钥和参数（让 AI 告诉你填什么）</strong></p>
     <p>进入刚创建的项目页面，点击顶部的 <strong>Variables</strong> 标签</p>
-    <p>点击 <strong>New Variable</strong> 按钮，逐个添加环境变量</p>
-    <p>常见环境变量参考：</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>变量名</th><th>值</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td><code>DEEPSEEK_API_KEY</code></td><td>sk-xxxxxxxx</td><td>DeepSeek AI 的 API 密钥</td></tr>
-          <tr><td><code>PORT</code></td><td><code>8000</code></td><td>后端运行端口（一般自动检测）</td></tr>
-        </tbody>
-      </table>
+    <p>点击 <strong>New Variable</strong> 按钮，逐个添加参数</p>
+    <div class="callout warn">
+      <strong>不要自己猜要填什么！</strong>：把你的后端代码仓库地址发给 AI，AI 会告诉你需要填哪些参数、每个参数填什么值。
+    </div>
+    <div class="prompt-box">
+      <div class="label">发给 AI 的提示词</div>
+      <div class="content">我的后端代码在这个 GitHub 仓库：【填你的后端仓库地址】
+我现在要在 Railway 的 Variables（变量）页面添加配置参数。
+请帮我看看：
+1. 需要添加哪些参数？
+2. 每个参数的值应该填什么？
+3. 哪些参数是需要我去申请的（比如 API 密钥）？怎么申请？
+请用大白话告诉我，我不懂代码。</div>
     </div>
     <div class="callout info">
-      <strong>DeepSeek API Key 怎么获取？</strong>：打开 <code>https://platform.deepseek.com</code>（国内可直连，不需要代理）→ 注册登录 → 左侧菜单 <strong>API Keys</strong> → 点击 <strong>创建 API Key</strong> → 复制密钥。
-    </div>
-    <div class="callout warn">
-      <strong>不知道需要哪些变量？</strong>：把后端代码中的 <code>.env.example</code>、<code>config.py</code> 或 <code>requirements.txt</code> 发给 AI，让 AI 告诉你需要配置哪些环境变量。
+      <strong>如果你的网站用到了 DeepSeek AI</strong>：需要去 <code>https://platform.deepseek.com</code>（国内能直接打开，不用开代理）注册登录 → 左侧菜单找 <strong>API Keys</strong> → 点 <strong>创建 API Key</strong> → 复制密钥。然后把密钥填到 Railway 的 Variables 里。
     </div>
   </div></div>
 
@@ -428,217 +449,276 @@ git config --global --unset https.proxy</code></pre>
     <p>找到 <strong>Networking</strong> 区域</p>
     <p>点击 <strong>Generate Domain</strong> 按钮</p>
     <p>Railway 会自动生成一个公网地址，格式类似：</p>
-    <pre><code>https://web-production-xxx.up.railway.app</code></pre>
+    <div class="ui-ref"><span class="key">https://web-production-xxx.up.railway.app</span> <span class="cn">← 这就是你的后端地址</span></div>
     <div class="callout danger">
-      <strong>记下这个地址！</strong>：后面配置 API 代理时需要用到。建议复制保存到记事本，或直接发给 AI 备用。
+      <strong>记下这个地址！</strong>：后面让 AI 帮你配置中转时会用到。建议复制保存到记事本里，或者直接发给 AI 备用。
     </div>
   </div></div>
 
   <div class="step"><div class="step-num">6</div><div class="step-body">
     <p><strong>验证后端是否正常运行</strong></p>
-    <p>在浏览器中打开后端地址 + <code>/health</code>：</p>
-    <pre><code>https://你的后端地址.up.railway.app/health</code></pre>
-    <p>看到 <code>{"status":"ok"}</code> 或类似的 JSON 返回，说明后端正常运行。</p>
+    <p>在浏览器中打开后端地址，在后面加上 <code>/health</code>：</p>
+    <div class="ui-ref"><span class="key">https://你的后端地址.up.railway.app/health</span></div>
+    <p>如果看到页面显示 <code>{"status":"ok"}</code> 或者类似的文字，说明后端正常运行。</p>
     <div class="callout warn">
-      <strong>打不开？</strong>：国内访问 Railway 需要开代理。验证完成后关代理也没关系，因为下一步我们会用 Cloudflare 代理让国内用户直连访问。
+      <strong>打不开？</strong>：国内访问 Railway 需要开代理。验证完成后关代理也没关系，因为下一步我们会用 Cloudflare 做中转，让国内用户不用开代理也能访问。
     </div>
   </div></div>
 
   <div class="step"><div class="step-num">7</div><div class="step-body">
-    <p><strong>查看运行日志（验证失败时）</strong></p>
-    <p>如果验证失败，进入项目 <strong>Logs</strong> 标签查看运行日志</p>
-    <p>把日志中的报错信息复制发给 AI，让 AI 帮你排查原因</p>
-    <div class="callout info">
-      <strong>常见原因</strong>：环境变量没配全（特别是 API Key）、Python 依赖安装失败、端口配置不对。把日志发给 AI 就能快速定位。
+    <p><strong>验证失败就找 AI 帮忙</strong></p>
+    <p>如果验证失败（比如页面显示错误、打不开），进入项目的 <strong>Logs</strong> 标签查看运行日志</p>
+    <p>把日志里的报错信息复制发给 AI，让 AI 帮你排查</p>
+    <div class="prompt-box">
+      <div class="label">发给 AI 的提示词</div>
+      <div class="content">我的后端部署在 Railway 上，但验证时出了问题。
+后端地址是：【填你的后端地址】
+这是 Railway 的日志报错信息：
+
+【粘贴日志里的报错内容】
+
+请帮我：
+1. 判断是什么原因
+2. 应该怎么解决
+3. 如果需要修改配置，告诉我具体改哪里</div>
     </div>
   </div></div>
 </section>
 
 <!-- 6 -->
 <section id="ch6">
-  <h2>六、配置 API 代理（让国内用户能访问后端）</h2>
+  <h2>六、让国内用户能访问后端（AI 帮你做）</h2>
   <div class="callout info">
-    <strong>为什么要这一步？</strong>：Railway 后端在国内被墙，用户直接访问会失败。我们在 Cloudflare Pages 项目里加一个"中转文件"，让用户请求通过 Cloudflare 转发到 Railway。Cloudflare 国内可直连，所以用户不需要开代理。
+    <strong>为什么要这一步？</strong>：Railway 后端在国内打不开。我们需要在 Cloudflare 项目里加一个"中转"，让用户的请求通过 Cloudflare 转发到 Railway。因为 Cloudflare 国内能直接打开，所以用户不需要开代理。
   </div>
-  <p><strong>原理</strong>：用户访问 <code>你的网站.pages.dev/api/xxx</code> → Cloudflare 收到请求 → 转发到 Railway 后端 → 后端返回数据 → Cloudflare 返回给用户。整个过程用户无感知。</p>
+  <p><strong>原理（简单理解）</strong>：用户访问你的网站 → Cloudflare 收到请求 → 帮你转发到 Railway 后端 → 后端返回数据 → Cloudflare 再返回给用户。整个过程用户完全感觉不到。</p>
+  <div class="callout success">
+    <strong>这一章你几乎不需要自己做什么技术操作</strong>：大部分工作让 AI 帮你完成。你只需要把信息发给 AI，然后把 AI 给你的文件放到正确位置就行。
+  </div>
 
   <h3>操作步骤</h3>
 
   <div class="step"><div class="step-num">1</div><div class="step-body">
-    <p><strong>让 AI 帮你创建代理文件</strong></p>
-    <p>不要自己写代码！把以下信息发给 AI，让 AI 帮你生成代理文件：</p>
-    <div class="template-box">
-      <pre><code>请帮我创建 Cloudflare Pages Functions 代理文件：
-- 我的前端仓库地址是：XXX
-- 后端地址是：https://你的后端地址.up.railway.app
-- 需要代理的接口：/api/research（POST 请求）
-- 还需要一个 /api/health 健康检查代理
+    <p><strong>把信息发给 AI，让 AI 帮你创建中转文件</strong></p>
+    <p>不要自己写代码！把以下信息发给 AI：</p>
+    <div class="prompt-box">
+      <div class="label">发给 AI 的提示词</div>
+      <div class="content">请帮我创建 Cloudflare Pages 的中转文件（代理文件）。
+- 我的前端 GitHub 仓库是：【填你的前端仓库地址】
+- 后端地址是：【填你的 Railway 后端地址】
+- 我的网站有搜索功能，搜索接口是 /api/research（用户发搜索词，后端返回结果）
+- 还需要一个 /api/health 用来检查后端是否正常
 
-请告诉我：
-1. 需要创建哪些文件？
-2. 每个文件的完整内容是什么？
-3. 文件应该放在仓库的什么位置？</code></pre>
+请帮我：
+1. 创建需要的中转文件
+2. 告诉我每个文件应该放在仓库的哪个文件夹下
+3. 如果你是在 TRAE 里操作，请直接帮我创建并推送
+
+我不懂代码，请直接帮我做好。</div>
     </div>
-    <p>AI 会告诉你具体需要创建哪些文件、文件内容、以及放在哪里。</p>
   </div></div>
 
   <div class="step"><div class="step-num">2</div><div class="step-body">
-    <p><strong>把文件放到正确位置</strong></p>
-    <p>AI 告诉你创建的文件，通常放在前端仓库的 <code>functions/api/</code> 目录下：</p>
-    <pre><code>你的前端仓库/
-├── functions/
-│   └── api/
-│       ├── research.js    ← 代理搜索接口
-│       └── health.js      ← 代理健康检查
-├── src/
-├── package.json
-└── ...</code></pre>
+    <p><strong>确认文件已经放好</strong></p>
+    <p>如果你用 AI 编程工具（如 TRAE），AI 会自动帮你创建文件并推送到 GitHub。</p>
+    <p>如果你没有用 AI 编程工具，可以手动在 GitHub 网页上操作：打开你的仓库页面 → 点 <strong>Add file</strong> → <strong>Create new file</strong> → 按照 AI 告诉你的文件名和内容填入。</p>
     <div class="callout info">
-      <strong>怎么创建文件？</strong>：如果你用 AI 编程工具（如 TRAE），直接告诉 AI "请帮我在 functions/api/ 目录下创建这些文件"，AI 会自动完成。也可以手动在 GitHub 网页上点 <strong>Add file → Create new file</strong> 来创建。
+      <strong>怎么确认文件放好了？</strong>：在你的 GitHub 仓库页面应该能看到一个新的 <strong>functions</strong> 文件夹，里面有 AI 创建的文件。如果不确定，截图仓库页面发给 AI 确认。
     </div>
   </div></div>
 
   <div class="step"><div class="step-num">3</div><div class="step-body">
-    <p><strong>推送到 GitHub</strong></p>
-    <p>如果用 AI 编程工具，可以让 AI 帮你执行推送。也可以用命令行：</p>
-    <pre><code>git add .
-git commit -m "添加API代理"
-git push origin main</code></pre>
+    <p><strong>等 Cloudflare 自动重建</strong></p>
+    <p>文件推送到 GitHub 后，Cloudflare 会自动检测到新代码并重新构建网站，通常 2-3 分钟完成。</p>
+    <p>你可以在 Cloudflare 控制台 <strong>Deployments</strong> 页面查看构建进度。</p>
     <div class="callout info">
-      <strong>自动重建</strong>：推送后 Cloudflare 会自动检测到新代码并重新构建，通常 2-3 分钟完成。可以在 Cloudflare 控制台 <strong>Deployments</strong> 页面查看构建进度。
+      <strong>怎么查看？</strong>：Cloudflare 控制台 → Workers & Pages → 点你的项目 → <strong>Deployments</strong> 标签。如果显示绿色就说明成功了，红色就是失败了。
     </div>
   </div></div>
 
   <div class="step"><div class="step-num">4</div><div class="step-body">
-    <p><strong>验证代理是否正常</strong></p>
-    <p>等 Cloudflare 构建完成后，在浏览器中打开：</p>
-    <pre><code>https://你的网站.pages.dev/api/health</code></pre>
-    <p>看到 <code>{"status":"ok"}</code> 说明代理正常工作！</p>
+    <p><strong>验证中转是否正常</strong></p>
+    <p>等 Cloudflare 构建完成后（显示绿色），在浏览器中打开：</p>
+    <div class="ui-ref"><span class="key">https://你的网站地址.pages.dev/api/health</span></div>
+    <p>如果看到 <code>{"status":"ok"}</code> 或者类似的文字，说明中转配置成功了！</p>
     <div class="callout success">
       <strong>恭喜！</strong>：到这里，你的网站已经完全上线了。用户可以在国内直接访问，不需要开代理。
     </div>
   </div></div>
 
   <div class="callout warn">
-    <strong>如果验证失败</strong>：截图 Cloudflare 构建日志和浏览器报错信息，发给 AI 排查。常见原因：后端地址写错了、文件位置不对、后端服务没正常运行。
+    <strong>如果验证失败</strong>：不要自己折腾。截图 Cloudflare 构建日志和浏览器报错信息，发给 AI 排查。常见原因：后端地址写错了、文件放错位置了、后端没正常运行。AI 能帮你快速定位。
   </div>
 </section>
 
 <!-- 7 -->
 <section id="ch7">
   <h2>七、部署后检查事项</h2>
-  <p>网站上线后，不要只看 Cloudflare 显示成功，还需要自己检查一遍。</p>
+  <p>网站上线后，不要只看 Cloudflare 显示成功，还需要自己打开网站检查一遍。</p>
   <h3>检查清单</h3>
   <ol>
-    <li>打开正式网站地址，确认页面能正常访问</li>
-    <li>检查首页是否显示正常</li>
-    <li>检查按钮、链接、图片是否正常</li>
-    <li>检查手机端展示是否正常</li>
-    <li>如果有表单，测试表单能否提交</li>
-    <li>如果有后端接口，测试接口能否正常返回</li>
-    <li>如果页面空白，检查构建输出目录是否填写错误</li>
-    <li>如果接口报错，检查环境变量和 API 地址是否正确</li>
+    <li>打开正式网站地址，确认页面能正常打开</li>
+    <li>检查首页内容是否显示正常（文字、图片有没有错位）</li>
+    <li>检查按钮、链接、图片是否能正常点击和显示</li>
+    <li>用手机打开网站地址试试（很重要！）</li>
+    <li>如果网站有搜索功能，试试搜索能不能用</li>
+    <li>如果网站有表单，试试能不能提交</li>
   </ol>
-  <div class="callout success">
-    <strong>最重要的一步</strong>：用手机打开网站地址试试！电脑能打开不代表手机也能打开。
+  <div class="callout danger">
+    <strong>最重要的一步</strong>：用手机打开网站地址试试！电脑能打开不代表手机也能打开。如果手机打不开或有错位，截图发给 AI 让它帮你调整。
+  </div>
+  <div class="callout info">
+    <strong>如果网站有问题</strong>：不要自己猜原因。描述清楚问题（比如"首页图片不显示""搜索点了没反应"），截图或录屏发给 AI，AI 能帮你判断是哪里出了问题。
   </div>
 </section>
 
 <!-- 8 -->
 <section id="ch8">
-  <h2>八、常见问题与解决方式</h2>
+  <h2>八、遇到问题怎么办</h2>
+  <div class="callout success">
+    <strong>万能解决方法</strong>：不管遇到什么问题，都是同一套流程——截图或复制报错信息 → 发给 AI → AI 告诉你怎么改 → 改完重新部署。下面是一些常见问题和对应的提示词。
+  </div>
 
-  <h3>问题 1：找不到 GitHub 仓库</h3>
-  <p><strong>原因</strong>：Cloudflare 没有该仓库的访问权限。</p>
-  <p><strong>解决</strong>：点击页面底部的 <strong>Cloudflare Pages</strong> 授权链接，到 GitHub 重新授权目标仓库。</p>
+  <h3>问题 1：在 Cloudflare 找不到 GitHub 仓库</h3>
+  <p><strong>原因</strong>：Cloudflare 没有获得你 GitHub 仓库的访问权限。</p>
+  <p><strong>解决</strong>：点击页面底部的 <strong>Cloudflare Pages</strong> 授权链接，到 GitHub 重新勾选目标仓库授权。</p>
 
-  <h3>问题 2：部署失败 — package-lock.json 不同步</h3>
-  <p><strong>错误信息</strong>：<code>npm ci can only install packages when lock file in sync</code></p>
-  <p><strong>原因</strong>：升级了依赖版本但锁文件没更新。</p>
-  <p><strong>解决</strong>：让 AI 帮你删除 <code>package-lock.json</code> 并重新推送。</p>
+  <h3>问题 2：部署失败了（显示红色）</h3>
+  <p><strong>原因</strong>：可能是配置填错了、代码有问题、或者依赖文件冲突。</p>
+  <p><strong>解决</strong>：不要反复点击重新部署！把构建日志里的红色报错信息复制发给 AI：</p>
+  <div class="prompt-box">
+    <div class="label">发给 AI 的提示词</div>
+    <div class="content">我的网站在 Cloudflare Pages 部署失败了。
+GitHub 仓库是：【填你的仓库地址】
+这是报错信息：
 
-  <h3>问题 3：部署失败 — force-dynamic 冲突</h3>
-  <p><strong>错误信息</strong>：<code>Page with dynamic = "force-dynamic" couldn't be exported</code></p>
-  <p><strong>原因</strong>：Next.js 静态导出模式不允许使用 <code>force-dynamic</code>。</p>
-  <p><strong>解决</strong>：把报错信息发给 AI，让 AI 帮你找到并删除相关代码。</p>
+【粘贴构建日志里红色的报错内容】
 
-  <h3>问题 4：部署成功但页面空白</h3>
-  <p><strong>原因</strong>：通常是输出目录填写错误。</p>
-  <p><strong>解决</strong>：检查构建输出目录。Vite 项目是 <code>dist</code>，Next.js 静态导出是 <code>out</code>。不确定就问 AI。</p>
+请帮我：
+1. 判断是什么原因
+2. 应该怎么修改
+3. 修改后怎么重新部署</div>
+  </div>
 
-  <h3>问题 5：网站可以打开但接口请求失败（502）</h3>
-  <p><strong>原因</strong>：后端未运行、地址错误或代理文件配置有误。</p>
+  <h3>问题 3：部署成功但页面是空白的</h3>
+  <p><strong>原因</strong>：通常是配置里的"输出目录"填错了。</p>
+  <p><strong>解决</strong>：把你的 GitHub 仓库地址发给 AI，问 AI "输出目录应该填什么"，然后去 Cloudflare 修改配置重新部署。</p>
+
+  <h3>问题 4：网站能打开但搜索/功能用不了</h3>
+  <p><strong>原因</strong>：后端可能没正常运行，或者中转文件配置有问题。</p>
   <p><strong>解决</strong>：</p>
   <ol>
-    <li>检查 Railway 后端是否正常运行（Railway 控制台 → Logs）</li>
-    <li>检查代理文件中的 <code>BACKEND_URL</code> 是否正确</li>
-    <li>把报错信息发给 AI 排查</li>
+    <li>先确认 Railway 后端是否正常：开代理打开 <code>你的后端地址/health</code></li>
+    <li>如果后端正常，把浏览器里的报错信息截图发给 AI</li>
   </ol>
+  <div class="prompt-box">
+    <div class="label">发给 AI 的提示词</div>
+    <div class="content">我的网站能打开，但搜索功能用不了。
+网站地址：【填你的网站地址】
+后端地址：【填你的后端地址】
 
-  <h3>问题 6：显示 522 错误</h3>
-  <p><strong>原因</strong>：构建可能还在进行中，或者构建失败了。</p>
-  <p><strong>解决</strong>：在 Cloudflare 控制台 <strong>Deployments</strong> 页面查看构建状态。如果 Failed，查看构建日志找原因。修复后重新推送代码。</p>
+这是浏览器里的报错信息：
+【截图或描述问题】
 
-  <h3>问题 7：安全漏洞警告</h3>
-  <p><strong>现象</strong>：Cloudflare 或其他平台提示 "Vulnerable version of Next.js detected"。</p>
-  <p><strong>解决</strong>：把提示信息发给 AI，让 AI 帮你升级到安全版本。升级后记得删除 <code>package-lock.json</code> 重新推送。</p>
+请帮我排查原因，告诉我怎么解决。</div>
+  </div>
 
-  <h3>问题 8：Vercel 在国内打不开</h3>
-  <p><strong>原因</strong>：Vercel 在国内被墙。</p>
-  <p><strong>解决</strong>：改用 Cloudflare Pages 部署前端。这也是本 SOP 推荐用 Cloudflare 的原因。</p>
+  <h3>问题 5：Cloudflare 显示 522 错误</h3>
+  <p><strong>原因</strong>：可能是网站还在构建中，或者构建失败了。</p>
+  <p><strong>解决</strong>：去 Cloudflare 控制台 <strong>Deployments</strong> 页面看看构建状态。如果显示红色（失败），按问题 2 的方法处理。</p>
+
+  <h3>问题 6：提示有安全漏洞</h3>
+  <p><strong>原因</strong>：你的项目用到了某个有安全问题的依赖包。</p>
+  <p><strong>解决</strong>：把提示信息发给 AI，让 AI 帮你升级到安全版本并重新推送。</p>
+  <div class="prompt-box">
+    <div class="label">发给 AI 的提示词</div>
+    <div class="content">我的网站在 Cloudflare 上提示有安全漏洞：
+【粘贴提示信息或截图】
+
+请帮我：
+1. 这是什么问题
+2. 怎么修复
+3. 请直接帮我修好并推送到 GitHub</div>
+  </div>
+
+  <h3>问题 7：Vercel 在国内打不开</h3>
+  <p><strong>原因</strong>：Vercel 在国内被墙了。</p>
+  <p><strong>解决</strong>：改用 Cloudflare Pages 部署。这就是本 SOP 推荐用 Cloudflare 的原因。</p>
 
   <div class="callout warn">
-    <strong>遇到问题不要慌</strong>：截图或复制报错信息发给 AI，AI 能帮你判断原因和解决方案。不要一直重复点击部署，要先看构建日志和报错原因。
+    <strong>遇到问题记住三个"不要"</strong>：不要慌、不要反复点击部署、不要自己瞎改配置。先把报错信息发给 AI，AI 帮你判断完再改。
   </div>
 </section>
 
 <!-- 9 -->
 <section id="ch9">
   <h2>九、给 AI 的提问模板</h2>
-  <p>如果部署时不确定怎么填，或者遇到报错，直接用以下模板问 AI：</p>
+  <p>整个部署过程中，遇到任何不确定的地方，都可以用以下模板问 AI。记住一个原则：<strong>信息越详细，AI 回答越准</strong>。</p>
 
-  <div class="template-box">
-    <h4>模板 A：不确定配置怎么填</h4>
-    <pre><code>我现在要把这个 GitHub 仓库部署到 Cloudflare Pages。
-仓库地址是：XXX
+  <div class="prompt-box">
+    <div class="label">模板 A：刚开始部署，不知道怎么填配置</div>
+    <div class="content">我要把网站部署到 Cloudflare Pages。
+GitHub 仓库地址是：【填你的仓库地址】
 
 请你帮我判断：
-1. 这个项目是什么技术栈？
-2. Cloudflare Pages 的构建命令应该填什么？
-3. 构建输出目录应该填什么？
-4. 是否需要环境变量？
-5. 如果部署失败，我应该优先检查哪些地方？</code></pre>
+1. 这个网站是什么类型的？
+2. Cloudflare 的"构建命令"填什么？
+3. "输出目录"填什么？
+4. 需要填"环境变量"吗？填什么？
+5. 如果部署失败，我先检查哪里？
+
+请用大白话告诉我，我完全不懂代码。</div>
   </div>
 
-  <div class="template-box">
-    <h4>模板 B：部署报错了</h4>
-    <pre><code>我在 Cloudflare Pages 部署网站时报错了。
+  <div class="prompt-box">
+    <div class="label">模板 B：部署/运行报错了</div>
+    <div class="content">我在部署/使用网站时遇到了问题。
+GitHub 仓库：【填你的仓库地址】
+网站地址：【填你的网站地址】（如果有的话）
+后端地址：【填你的后端地址】（如果有的话）
+
 这是报错信息：
 
-【粘贴报错日志】
+【粘贴报错日志，或描述问题】
 
-请你帮我判断：
-1. 报错原因是什么？
-2. 应该怎么修改？
-3. Cloudflare Pages 配置里需要改哪些地方？
-4. 修改后如何重新部署？</code></pre>
+请帮我：
+1. 判断是什么原因
+2. 应该怎么修改
+3. 如果需要你帮忙改代码，请直接帮我改好并推送
+
+我不懂代码，请直接帮我解决。</div>
   </div>
 
-  <div class="template-box">
-    <h4>模板 C：网站打开了但功能不正常</h4>
-    <pre><code>我的网站已经部署到 Cloudflare Pages 了，
-地址是：https://xxx.pages.dev
+  <div class="prompt-box">
+    <div class="label">模板 C：网站打开了但功能不正常</div>
+    <div class="content">我的网站已经部署到 Cloudflare 了，
+地址是：【填你的网站地址】
 
 但是遇到以下问题：
-【描述问题，比如：搜索功能用不了 / 页面显示不全 / 接口报错】
+【描述问题，比如：搜索功能用不了 / 页面显示不全 / 图片不显示 / 手机上打不开】
 
-后端地址是：https://xxx.up.railway.app
+后端地址是：【填你的后端地址】
 
-请你帮我排查原因，告诉我应该怎么解决。</code></pre>
+请你帮我排查原因，告诉我应该怎么解决。
+如果有截图我发给你看。</div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="label">模板 D：需要 AI 直接帮你做（不想自己操作）</div>
+    <div class="content">请帮我完成以下操作，我不懂代码，你直接帮我做好：
+
+【描述你需要做的事，比如：
+- 帮我创建中转文件并推送到 GitHub
+- 帮我修复安全漏洞
+- 帮我升级版本
+- 帮我修改配置文件】
+
+我的仓库地址是：【填你的仓库地址】
+其他信息：【填 AI 需要知道的信息】</div>
   </div>
 
   <div class="callout info">
-    <strong>提问技巧</strong>：给 AI 的信息越详细越好——仓库地址、报错日志、截图、你操作到哪一步了。信息越全，AI 回答越准。
+    <strong>提问小技巧</strong>：给 AI 的信息越详细越好——仓库地址、报错日志、截图、你操作到哪一步了、你期望的结果是什么。信息越全，AI 回答越准。
   </div>
 </section>
 
@@ -647,104 +727,115 @@ git push origin main</code></pre>
   <h2>十、后续维护</h2>
 
   <h3>更新网站内容</h3>
-  <p>修改代码后，只需要一条命令重新部署：</p>
-  <pre><code>git add .
-git commit -m "修改说明"
-git push origin main</code></pre>
-  <p>推送后 Cloudflare 会自动重新构建，通常 2-3 分钟后新版本上线。不需要手动操作。</p>
+  <p>如果你修改了网站代码（或让 AI 帮你改了），只需要把新代码推送到 GitHub，Cloudflare 就会自动重新部署。不需要手动操作。</p>
+  <div class="callout info">
+    <strong>怎么推送？</strong>：如果你用 AI 编程工具（如 TRAE），直接告诉 AI "帮我推送到 GitHub"就行。推送后 Cloudflare 通常 2-3 分钟后自动更新。
+  </div>
+  <div class="prompt-box">
+    <div class="label">发给 AI 的提示词</div>
+    <div class="content">我已经改好了网站代码，请帮我推送到 GitHub。
+推送后帮我看看 Cloudflare 有没有自动开始重新构建。</div>
+  </div>
 
-  <h3>查看构建状态和日志</h3>
+  <h3>查看网站状态</h3>
   <ul>
-    <li><strong>Cloudflare</strong>：控制台 → Workers & Pages → 选项目 → <strong>Deployments</strong> 标签查看每次构建状态</li>
-    <li><strong>Railway</strong>：控制台 → 选项目 → <strong>Logs</strong> 标签查看后端运行日志</li>
+    <li><strong>Cloudflare</strong>：控制台 → Workers & Pages → 点你的项目 → <strong>Deployments</strong> 看每次部署是否成功（绿色=成功，红色=失败）</li>
+    <li><strong>Railway</strong>：控制台 → 点你的项目 → <strong>Logs</strong> 看后端运行日志</li>
   </ul>
 
-  <h3>网站数据分析</h3>
-  <p>Cloudflare 自带免费的数据分析功能：</p>
+  <h3>查看网站访问数据</h3>
+  <p>Cloudflare 自带免费的数据统计功能：</p>
   <ul>
-    <li>控制台 → 选项目 → <strong>Analytics</strong> 标签</li>
-    <li>可以查看：请求数、独立访客、流量、国家分布、错误率</li>
-  </ul>
-
-  <h3>网站监控</h3>
-  <p>推荐用 <strong>UptimeRobot</strong>（https://uptimerobot.com）免费监控网站是否在线：</p>
-  <ul>
-    <li>每 5 分钟检查一次</li>
-    <li>网站挂了立刻发邮件通知</li>
-    <li>免费版支持 50 个监控</li>
+    <li>控制台 → 点你的项目 → <strong>Analytics</strong> 标签</li>
+    <li>可以看到：访问次数、访客数量、流量来源、访问者国家分布等</li>
   </ul>
   <div class="callout info">
-    <strong>建议</strong>：上线后第一时间设置监控，这样网站出问题你能第一时间知道，而不是等用户投诉。
+    <strong>不知道怎么看？</strong>：进了 Cloudflare 控制台找不到数据？截图发给 AI，告诉 AI"我想看网站访问数据"，AI 会指导你点哪里。
+  </div>
+
+  <h3>网站监控（可选）</h3>
+  <p>推荐用 <strong>UptimeRobot</strong>（<code>https://uptimerobot.com</code>）免费监控网站是否在线：</p>
+  <ul>
+    <li>每 5 分钟自动检查一次你的网站能不能打开</li>
+    <li>网站打不开了立刻发邮件通知你</li>
+    <li>免费版支持 50 个网站监控</li>
+  </ul>
+  <div class="callout info">
+    <strong>建议</strong>：上线后第一时间设置监控，这样网站出问题你能第一时间知道，而不是等用户反馈。
   </div>
 
   <h3>回退到旧版本</h3>
-  <p>如果新版本有问题，可以回退：</p>
+  <p>如果新版本有问题，可以回退到之前能用的版本：</p>
   <ul>
-    <li><strong>Cloudflare</strong>：Deployments 页面 → 找到之前成功的构建 → 点 <strong>Promote to production</strong></li>
+    <li><strong>Cloudflare</strong>：Deployments 页面 → 找到之前显示绿色的那次构建 → 点 <strong>Promote to production</strong></li>
     <li><strong>Railway</strong>：Deployments 页面 → 找到之前的部署 → 点 <strong>Redeploy</strong></li>
   </ul>
+  <div class="callout info">
+    <strong>找不到按钮？</strong>：截图 Cloudflare 或 Railway 页面发给 AI，告诉 AI "我想回退到旧版本"，AI 会指导你点哪个按钮。
+  </div>
 </section>
 
 <!-- 11 -->
 <section id="ch11">
   <h2>十一、流程总结</h2>
   <div class="callout success">
-    <p><strong>前端部署（必须）</strong>：</p>
+    <p><strong>第一步：前端部署（必须）</strong></p>
     <ol style="margin-top: 8px;">
-      <li>登录 Cloudflare → Workers & Pages → Create application</li>
-      <li>选 Pages → Get started → Import Git repository</li>
-      <li>连接 GitHub → 选择仓库</li>
-      <li>配置构建命令和输出目录（不确定问 AI）</li>
+      <li>登录 Cloudflare → 找到 Workers & Pages → 点 Create application</li>
+      <li>选 Pages → Get started → 选 Import an existing Git repository</li>
+      <li>连接 GitHub → 选择你的网站仓库</li>
+      <li>填写配置信息（<strong>不知道怎么填就问 AI</strong>）</li>
       <li>点 Save and Deploy → 等待构建完成</li>
-      <li>复制 <code>xxx.pages.dev</code> 正式地址</li>
+      <li>复制 <code>xxx.pages.dev</code> 网站地址</li>
     </ol>
   </div>
   <div class="callout success">
-    <p><strong>后端部署（有后端时需要）</strong>：</p>
+    <p><strong>第二步：后端部署（有搜索/登录等功能时需要）</strong></p>
     <ol style="margin-top: 8px;">
       <li>登录 Railway → New Project → Deploy from GitHub repo</li>
-      <li>选后端仓库 → 配置环境变量</li>
+      <li>选后端仓库 → 配置参数（<strong>问 AI 要填什么</strong>）</li>
       <li>Settings → Networking → Generate Domain → 记下后端地址</li>
-      <li>验证 <code>xxx.up.railway.app/health</code> 返回正常</li>
+      <li>开代理验证后端地址能不能打开</li>
     </ol>
   </div>
   <div class="callout success">
-    <p><strong>API 代理配置（后端在 Railway 时必须）</strong>：</p>
+    <p><strong>第三步：配置中转（有后端时必须）</strong></p>
     <ol style="margin-top: 8px;">
-      <li>在前端仓库创建 <code>functions/api/</code> 目录</li>
-      <li>放入代理文件（模板见第六章，让 AI 帮你生成）</li>
-      <li>推送到 GitHub → Cloudflare 自动重建</li>
-      <li>验证 <code>xxx.pages.dev/api/health</code> 返回正常</li>
+      <li>把前端仓库地址和后端地址发给 AI</li>
+      <li>让 AI 帮你创建中转文件并推送到 GitHub</li>
+      <li>等 Cloudflare 自动重建（2-3 分钟）</li>
+      <li>验证 <code>你的网站/api/health</code> 能不能打开</li>
     </ol>
   </div>
 
-  <h3>三个关键地址</h3>
+  <h3>三个重要地址（记好）</h3>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>名称</th><th>地址格式</th><th>用途</th></tr></thead>
+      <thead><tr><th>名称</th><th>地址格式</th><th>用来干什么</th></tr></thead>
       <tbody>
-        <tr><td>前端地址</td><td><code>https://xxx.pages.dev</code></td><td>分享给用户</td></tr>
-        <tr><td>后端地址</td><td><code>https://xxx.up.railway.app</code></td><td>配置在代理文件里</td></tr>
-        <tr><td>健康检查</td><td><code>https://xxx.pages.dev/api/health</code></td><td>验证是否正常</td></tr>
+        <tr><td>网站地址</td><td><code>https://xxx.pages.dev</code></td><td>分享给用户访问</td></tr>
+        <tr><td>后端地址</td><td><code>https://xxx.up.railway.app</code></td><td>告诉 AI，让它帮你配置中转</td></tr>
+        <tr><td>检查地址</td><td><code>https://xxx.pages.dev/api/health</code></td><td>验证网站功能是否正常</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3>注意事项</h3>
+  <h3>记住这些原则</h3>
   <ol>
-    <li>网站部署优先选 <strong>Pages</strong>，不要误选 Worker</li>
-    <li>GitHub 仓库不显示时，优先检查 Cloudflare Pages 的 GitHub 授权</li>
-    <li>不确定构建命令和输出目录时，不要乱填，让 AI 判断</li>
-    <li>部署成功不代表完全可用，还要手动打开检查</li>
-    <li>对外分享用 <strong>Domains</strong> 下的正式地址</li>
-    <li>遇到部署失败，先看构建日志，不要重复点击部署</li>
-    <li>如果 AI 卡住，换一个 AI 工具或搜索报错信息，避免长时间陷入无效等待</li>
+    <li>网站部署选 <strong>Pages</strong>，不要选 Worker</li>
+    <li>找不到 GitHub 仓库，去检查授权</li>
+    <li>不知道配置怎么填，<strong>不要瞎填，问 AI</strong></li>
+    <li>部署成功不等于网站没问题，要自己打开检查</li>
+    <li>对外分享用 <code>xxx.pages.dev</code> 正式地址</li>
+    <li>遇到失败，先复制报错信息问 AI，<strong>不要反复点击部署</strong></li>
+    <li>如果 AI 也卡住了，换个 AI 工具试试，或者搜索报错信息</li>
+    <li><strong>你不是一个人在战斗</strong>：技术的事交给 AI，你负责点击和判断</li>
   </ol>
 </section>
 
 <footer>
-  <p>新人 AI 工作 SOP：使用 Cloudflare Pages 部署网站 v2.0</p>
-  <p style="margin-top:8px">基于真实部署经验整理，AI + 人协同操作流程。</p>
+  <p>新人 AI 工作 SOP：网站部署上线 v3.0</p>
+  <p style="margin-top:8px">你负责点击操作，AI 负责技术判断。基于真实部署经验整理。</p>
 </footer>
 
 </div>
