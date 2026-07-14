@@ -124,6 +124,10 @@ tr:last-child td { border-bottom: none; }
 /* AI action badge */
 .ai-action { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
 
+/* Demo images */
+.demo-img { width: 100%; border-radius: 8px; border: 1px solid var(--rule); margin: 12px 0; display: block; }
+.demo-caption { font-size: 13px; color: var(--muted); margin: -4px 0 16px; text-align: center; }
+
 footer { padding: 48px 0 64px; text-align: center; color: var(--muted); font-size: 13px; }
 footer a { color: var(--accent); text-decoration: none; }
 
@@ -287,6 +291,8 @@ footer a { color: var(--accent); text-decoration: none; }
     <div class="callout info">
       <strong>Workers & Pages 是什么</strong>：就是 Cloudflare 里"管理网站"的页面。进去之后可以创建新的网站项目。
     </div>
+    <img class="demo-img" src="assets/step-workers-pages.jpg" alt="Cloudflare 控制台 Workers & Pages 页面" loading="lazy">
+    <p class="demo-caption">↑ 在左侧找到 Workers & Pages，然后点右上角蓝色按钮 Create application</p>
   </div></div>
 
   <div class="step"><div class="step-num">3</div><div class="step-body">
@@ -302,12 +308,16 @@ footer a { color: var(--accent); text-decoration: none; }
     <div class="callout warn">
       <strong>Worker 和 Pages 的区别（简单理解）</strong>：Worker 是用来处理后端逻辑的，Pages 是用来放网站页面的。我们要上线网站，所以选 Pages。<strong>选错了也没关系</strong>，退回去重新选就好。
     </div>
+    <img class="demo-img" src="assets/step-select-pages.jpg" alt="Cloudflare 创建 Worker 或 Pages 选择页面" loading="lazy">
+    <p class="demo-caption">↑ 不要选 Create a Worker，在页面底部找到 "Looking to deploy Pages? Get started" 点这个</p>
   </div></div>
 
   <div class="step"><div class="step-num">5</div><div class="step-body">
     <p><strong>选择从 GitHub 导入</strong></p>
     <p>选择 <strong>Import an existing Git repository</strong>，点击 <strong>Get started</strong>。</p>
     <p>中文理解：从 GitHub 上已有的代码仓库导入。这样以后你更新了 GitHub 上的代码，Cloudflare 会自动帮你重新部署。</p>
+    <img class="demo-img" src="assets/step-import-git.jpg" alt="Cloudflare Pages 导入 Git 仓库页面" loading="lazy">
+    <p class="demo-caption">↑ 选第一个 "Import an existing Git repository"，然后点 Get started</p>
   </div></div>
 
   <div class="step"><div class="step-num">6</div><div class="step-body">
@@ -349,6 +359,8 @@ footer a { color: var(--accent); text-decoration: none; }
 请一个一个告诉我，用大白话说。</div>
     </div>
     <p>AI 告诉你每个空填什么后，照着填就行。</p>
+    <img class="demo-img" src="assets/step-select-repo.jpg" alt="Cloudflare Pages 选择 GitHub 仓库和配置页面" loading="lazy">
+    <p class="demo-caption">↑ 选择你的仓库后，剩下的配置不知道怎么填就把仓库地址发给 AI 让它告诉你</p>
   </div></div>
 
   <div class="step"><div class="step-num">9</div><div class="step-body">
@@ -366,6 +378,8 @@ footer a { color: var(--accent); text-decoration: none; }
     <div class="callout warn">
       <strong>如果部署失败了</strong>：不要慌，也不要反复点击重新部署。把构建日志里红色的报错信息复制发给 AI，让 AI 帮你找原因。
     </div>
+    <img class="demo-img" src="assets/step-deploy-success.jpg" alt="Cloudflare Pages 部署成功页面" loading="lazy">
+    <p class="demo-caption">↑ 看到这个页面就代表部署成功了！出现这个地球图和网址就对了</p>
   </div></div>
 
   <div class="step"><div class="step-num">11</div><div class="step-body">
@@ -376,6 +390,8 @@ footer a { color: var(--accent); text-decoration: none; }
     <div class="callout info">
       <strong>两种地址的区别</strong>：正式地址 <code>xxx.pages.dev</code> 是对外分享用的；还有一种带随机前缀的地址（比如 <code>4601e4a2.xxx.pages.dev</code>）是某次部署的预览链接，一般不用管。对外分享用正式地址。
     </div>
+    <img class="demo-img" src="assets/step-find-domain.jpg" alt="Cloudflare Pages 部署详情页面显示正式域名" loading="lazy">
+    <p class="demo-caption">↑ 在 Deployments 页面找到 Production 区域，这里显示的就是你的正式网站地址</p>
   </div></div>
 </section>
 
